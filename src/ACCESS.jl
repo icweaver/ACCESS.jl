@@ -1,8 +1,11 @@
 module ACCESS
 
+using DataFrames: DataFrame
 using PyCall: @py_str
 
-export load_pickle
+export load_pickle, sub_dict, DataFrame
+
+include("load.jl")
 
 function __init__()
     py"""
@@ -15,18 +18,5 @@ function __init__()
     """
 end
 load_pickle(s) = py"load_pickle"(s)
-
-# function __init__()
-#     py"""
-#     import numpy as np
-#     import pickle
-#
-#     def load_pickle(fpath):
-#         with open(fpath, "rb") as f:
-#             data = pickle.load(f)
-#         return data
-#     """
-# end
-# load_pickle = py"load_pickle"
 
 end # module
