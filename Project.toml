@@ -1,0 +1,19 @@
+name = "ACCESS"
+uuid = "fbfbae9a-58d6-4d3f-91a1-1b0e55b1526c"
+authors = ["icweaver <iweaver@cfa.harvard.edu> and contributors"]
+version = "0.1.0"
+
+[deps]
+Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
