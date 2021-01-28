@@ -17,6 +17,9 @@ end
 begin
 	using Revise
 	using ACCESS
+	using CSV
+	using StatsPlots
+	using Measurements
 end
 
 # ╔═╡ df49009b-0f51-419b-b84c-99ea3610aa6c
@@ -93,9 +96,11 @@ if run_retrievals
 end
 
 # ╔═╡ 4ebb0012-61a9-11eb-1513-678e52371305
-md"""
-### Copy paste ``\LaTeX`` table
-"""
+if run_retrievals
+	md"""
+	### Copy paste ``\LaTeX`` table
+	"""
+end
 
 # ╔═╡ 14d5c3b2-61a8-11eb-349f-cb24dc8b57ea
 if run_retrievals
@@ -104,10 +109,45 @@ if run_retrievals
 	end
 end
 
+# ╔═╡ 78561026-61b6-11eb-2100-153023cf94cf
+if run_retrievals
+	md"""
+	### Evidences graph
+	"""
+end
+
+# ╔═╡ 63378968-61b1-11eb-2ca4-d35d300a7b68
+if run_retrievals
+	groupedbar(
+		species,
+		ΔlnZ;
+		label = reshape(models, 1, :),
+		lw = 0,
+		xlabel = "Species",
+		ylabel = "Relative change in log-evidence",
+		legend = :outertopright,
+		title = BASE_DIR,
+		fmt = :png,
+		dpi = 250,
+	)
+end
+
 # ╔═╡ a7f5ccb5-3a63-4197-91cf-942d894f58ba
 md"""
 ## Packages
 """
+
+# ╔═╡ 110457da-61bf-11eb-1a02-916d60cb2096
+begin
+	const pal = palette(["#f5d300", "#d55e00", "#08f7fe", "#0173b2", "#029e73"])
+	theme(:dark)
+	default(
+		titlefont = "Lato",
+		guidefont = "Lato",
+		#markerstrokewidth = 0,
+		palette=pal,
+	)
+end
 
 # ╔═╡ Cell order:
 # ╟─edbe9545-e948-4cdb-94c9-eea816b8cb7e
@@ -119,6 +159,9 @@ md"""
 # ╠═4ffdfbc0-619d-11eb-1506-65e1a4efabb7
 # ╟─4ebb0012-61a9-11eb-1513-678e52371305
 # ╟─14d5c3b2-61a8-11eb-349f-cb24dc8b57ea
+# ╟─78561026-61b6-11eb-2100-153023cf94cf
+# ╟─63378968-61b1-11eb-2ca4-d35d300a7b68
 # ╟─a7f5ccb5-3a63-4197-91cf-942d894f58ba
 # ╠═773a7b60-5a6c-11eb-0a88-1de623c4a412
+# ╠═110457da-61bf-11eb-1a02-916d60cb2096
 # ╠═df49009b-0f51-419b-b84c-99ea3610aa6c
