@@ -3,8 +3,12 @@ module ACCESS
 using DataFrames: DataFrame
 using PyCall: @py_str
 using Measurements
+using NamedArrays
+using LatexPrint
+using LatexPrint: latex_form
 
-export load_pickle, sub_dict, DataFrame, load_retrieval_data, get_evidences
+
+export load_pickle, sub_dict, DataFrame, load_retrieval_data, get_evidences, lap
 
 include("load.jl")
 include("retrievals.jl")

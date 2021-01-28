@@ -33,14 +33,24 @@ end
 
 function get_evidences(retrieval_data)
     N_species, N_models = length(species), length(models)
-    evidences = Array{Measurement{Float64}}(undef, N_species, N_models)
+    Z_mat = Array{Measurement{Float64}}(undef, N_species, N_models)
 
     for (i, model) in enumerate(models)
         for (j, sp) in enumerate(species)
             retr = getfield(getfield(retrieval_data, sp), model)
-            evidences[j, i] = retr["lnZ"] ± retr["lnZerr"]
+            Z_mat[j, i] = retr["lnZ"] ± retr["lnZerr"]
         end
     end
 
-    return evidences
+    Z = NamedArray(
+        Z_mat,
+        (species .|> String, models .|> String),
+        ("species", "models")
+    )
+
+    return Z
+end
+
+function latex_form(m::Measurement{Float64})
+    "$(round(m.val; digits=2)) \\pm $(round(m.err; digits=2))"
 end

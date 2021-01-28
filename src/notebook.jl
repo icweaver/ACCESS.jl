@@ -67,7 +67,6 @@ Summarize Bayesian evidences returned by `exoretrievals`
 # ╔═╡ 4ffdfbc0-619d-11eb-1506-65e1a4efabb7
 if run_retrievals
 	const BASE_DIR = "data_retrievals/spot_lower_bound"
-	
 	const model_types = (
 		clear = "HATP23_E1_NoHet_FitP0_NoClouds_NoHaze_fitR0",
 		haze = "HATP23_E1_NoHet_FitP0_NoClouds_Haze_fitR0",
@@ -77,8 +76,32 @@ if run_retrievals
 	
 	retrieval_data = load_retrieval_data(BASE_DIR, model_types)
 	
-	evidences = get_evidences(retrieval_data)
+	Z = get_evidences(retrieval_data)
+	
+	min_Z, min_Z_loc = findmin(Z)
+	
+	ΔlnZ = Z .- min_Z
+end
 
+# ╔═╡ 84b6b120-61a9-11eb-2bc8-df73e542a46d
+if run_retrievals
+	species = names(Z, 1)
+	models = names(Z, 2)
+	ΔlnZ_mat = hcat(Symbol.(species), ΔlnZ.array)
+	min_model = species[min_Z_loc[1]], models[min_Z_loc[2]]
+	md"Lowest evidence: $(min_model)"
+end
+
+# ╔═╡ 4ebb0012-61a9-11eb-1513-678e52371305
+md"""
+### Copy paste ``\LaTeX`` table
+"""
+
+# ╔═╡ 14d5c3b2-61a8-11eb-349f-cb24dc8b57ea
+if run_retrievals
+	with_terminal() do
+		lap(ΔlnZ_mat)
+	end
 end
 
 # ╔═╡ a7f5ccb5-3a63-4197-91cf-942d894f58ba
@@ -92,7 +115,10 @@ md"""
 # ╟─f9cbabb3-7a98-46fd-adee-0ea2a1e53284
 # ╠═1061134b-a53c-4abb-96b5-b95def13f02b
 # ╟─2a9ead8e-619d-11eb-15ee-43f8d97c4f19
+# ╟─84b6b120-61a9-11eb-2bc8-df73e542a46d
 # ╠═4ffdfbc0-619d-11eb-1506-65e1a4efabb7
+# ╟─4ebb0012-61a9-11eb-1513-678e52371305
+# ╟─14d5c3b2-61a8-11eb-349f-cb24dc8b57ea
 # ╟─a7f5ccb5-3a63-4197-91cf-942d894f58ba
 # ╠═773a7b60-5a6c-11eb-0a88-1de623c4a412
 # ╠═df49009b-0f51-419b-b84c-99ea3610aa6c
