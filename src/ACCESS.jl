@@ -2,10 +2,12 @@ module ACCESS
 
 using DataFrames: DataFrame
 using PyCall: @py_str
+using Measurements
 
-export load_pickle, sub_dict, DataFrame
+export load_pickle, sub_dict, DataFrame, load_retrieval_data, get_evidences
 
 include("load.jl")
+include("retrievals.jl")
 
 function __init__()
     py"""

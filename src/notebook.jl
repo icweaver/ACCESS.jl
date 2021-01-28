@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.18
+# v0.12.20
 
 using Markdown
 using InteractiveUtils
@@ -58,6 +58,29 @@ if run_GPT_WLC
 	df_gpts = DataFrame(gpts_params_dict)
 end
 
+# ╔═╡ 2a9ead8e-619d-11eb-15ee-43f8d97c4f19
+md"""## $(@bind run_retrievals CheckBox()) `exoretrievals`
+
+Summarize Bayesian evidences returned by `exoretrievals`
+"""
+
+# ╔═╡ 4ffdfbc0-619d-11eb-1506-65e1a4efabb7
+if run_retrievals
+	const BASE_DIR = "data_retrievals/spot_lower_bound"
+	
+	const model_types = (
+		clear = "HATP23_E1_NoHet_FitP0_NoClouds_NoHaze_fitR0",
+		haze = "HATP23_E1_NoHet_FitP0_NoClouds_Haze_fitR0",
+		spot = "HATP23_E1_Het_FitP0_NoClouds_NoHaze_fitR0",
+		spot_haze = "HATP23_E1_Het_FitP0_NoClouds_Haze_fitR0",
+	)
+	
+	retrieval_data = load_retrieval_data(BASE_DIR, model_types)
+	
+	evidences = get_evidences(retrieval_data)
+
+end
+
 # ╔═╡ a7f5ccb5-3a63-4197-91cf-942d894f58ba
 md"""
 ## Packages
@@ -68,6 +91,8 @@ md"""
 # ╟─24519e4d-5cfc-4ff7-acec-632088d84757
 # ╟─f9cbabb3-7a98-46fd-adee-0ea2a1e53284
 # ╠═1061134b-a53c-4abb-96b5-b95def13f02b
+# ╟─2a9ead8e-619d-11eb-15ee-43f8d97c4f19
+# ╠═4ffdfbc0-619d-11eb-1506-65e1a4efabb7
 # ╟─a7f5ccb5-3a63-4197-91cf-942d894f58ba
 # ╠═773a7b60-5a6c-11eb-0a88-1de623c4a412
 # ╠═df49009b-0f51-419b-b84c-99ea3610aa6c
