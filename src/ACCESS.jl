@@ -5,7 +5,7 @@ using PyCall: @py_str
 using Measurements
 using NamedArrays
 using LatexPrint
-using LatexPrint: latex_form
+import LatexPrint: latex_form
 
 export load_pickle, sub_dict, DataFrame, load_retrieval_data, get_evidences, lap
 
