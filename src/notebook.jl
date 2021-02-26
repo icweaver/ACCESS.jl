@@ -213,16 +213,54 @@ end;
 
 # ╔═╡ 20af7a2e-780e-11eb-112b-e9382852c19f
 #plot(extracted_spec_med, label=reshape(df_spec.name, 1, :), legend=:outertopright)
-plot(
-	extracted_spec_med,
-	label = label=reshape(df_spec.name, 1, :),
-	legend = :outertopleft,
-	palette = :Paired,
-	title = "$data_dir: $extr_spec_key",
-)
+let
+	plotly()
+	names = map(df_spec.name) do arr
+				split(arr, "_spec")[1]
+			end
+	
+	plot(
+		extracted_spec_med,
+		label = label=reshape(names, 1, :),
+		legend = :outertopleft,
+		palette = :Paired,
+		title = "$data_dir: $extr_spec_key",
+	)
+end
 
-# ╔═╡ c2437308-780f-11eb-2de2-2344288d6c14
-plotly()
+# ╔═╡ 12f69690-7815-11eb-2208-3563a75de8e9
+md"""
+### $(@bind run_trace CheckBox()) Trace
+View spectra traces
+"""
+
+# ╔═╡ cb691d70-7814-11eb-1e86-5d4d598a3ace
+if run_trace
+	DATA_RED = "/home/mango/data/data_reductions/WASP50/$data_dir"
+	XX = load_pickle("$DATA_RED/XX.pkl")
+    YY = load_pickle("$DATA_RED/YY.pkl")
+	
+	md"""
+	**Number of traces to show for:**
+	$(@bind trace_key Select(collect([Pair(key,key) for key in keys(XX)])))
+	$(@bind num_traces Slider(2:7, show_value=true))
+	"""
+end
+
+# ╔═╡ 48714914-7815-11eb-388b-2d69581df140
+if run_trace
+	gr()
+	trace_idxs = round.(Int, range(1, length(XX[trace_key]), length=num_traces))
+	plot(
+		XX[trace_key][trace_idxs],
+		YY[trace_key][trace_idxs],
+		label = reshape(trace_idxs, 1, :) .- 1,
+		title = trace_key,
+		legend = :topright,
+		legend_title = "trace 0-index",
+		palette = palette(:diverging_isoluminant_cjo_70_c25_n256, num_traces),
+	)
+end
 
 # ╔═╡ f9cbabb3-7a98-46fd-adee-0ea2a1e53284
 md"""## $(@bind run_GPT_WLC CheckBox()) GPT WLC
@@ -358,7 +396,9 @@ end
 # ╟─c34212e6-780a-11eb-035b-d3d3b4750145
 # ╟─06b86f86-780e-11eb-1e2c-27150bbb2140
 # ╟─20af7a2e-780e-11eb-112b-e9382852c19f
-# ╠═c2437308-780f-11eb-2de2-2344288d6c14
+# ╟─12f69690-7815-11eb-2208-3563a75de8e9
+# ╟─cb691d70-7814-11eb-1e86-5d4d598a3ace
+# ╟─48714914-7815-11eb-388b-2d69581df140
 # ╠═f9cbabb3-7a98-46fd-adee-0ea2a1e53284
 # ╠═1061134b-a53c-4abb-96b5-b95def13f02b
 # ╟─2a9ead8e-619d-11eb-15ee-43f8d97c4f19
