@@ -21,10 +21,8 @@ begin
 	using Glob, FITSIO, DataFramesMeta
 	using Statistics
 	using Unitful, UnitfulAstro
+	using MultivariateStats, LinearAlgebra, StatsBase
 end
-
-# ╔═╡ 55f049f0-0fdc-43b7-bd41-ad73b472cff1
-using MultivariateStats, LinearAlgebra, StatsBase
 
 # ╔═╡ 94595695-b439-4032-924d-fba32a481199
 TableOfContents()
@@ -96,20 +94,10 @@ X = norm_data(eparams, dims=1)
 # ╔═╡ c4f1f656-ce41-4319-a394-cae2094fdd14
 Xc = norm_data(comps, dims=1)
 
-# ╔═╡ 0cb244ad-9757-4bff-b281-4f60dcf07c2d
-norm_data(Xc, use_MAD=true)
-
 # ╔═╡ 19f011b1-719e-4d08-9f64-c02232939aa4
 md"""
 `svd(A)` returns `U`, `S`, `V`, where ``A = U \Sigma V^*``, with ``\Sigma = \text{diagm}(S)`` being the diagonal matrix of singular values sorted in descending order.
 """
-
-# ╔═╡ 5643f5fe-7873-45e1-9807-048c6c521598
-function classic_PCA(data; dims=1, standardize=true)
-	A = standardize ? norm_data(data, dims=dims, use_MAD=true) : copy(data)
-	U, S, V = svd(cov(A))
-	return V, S, A * V
-end
 
 # ╔═╡ c52b38fb-bd77-4176-a570-0923aa99cc07
 V, S, A = classic_PCA(Xc)
@@ -194,11 +182,8 @@ end
 # ╠═c4f1f656-ce41-4319-a394-cae2094fdd14
 # ╠═d621bf6d-c6ab-4626-89fd-6f5d5ac68a47
 # ╟─519cd15e-e6a0-4d7f-b9c7-40be545fa373
-# ╠═55f049f0-0fdc-43b7-bd41-ad73b472cff1
 # ╠═6b2b8037-aa24-4671-a1b8-9d9027c2c8bc
-# ╠═0cb244ad-9757-4bff-b281-4f60dcf07c2d
 # ╟─19f011b1-719e-4d08-9f64-c02232939aa4
-# ╠═5643f5fe-7873-45e1-9807-048c6c521598
 # ╠═c52b38fb-bd77-4176-a570-0923aa99cc07
 # ╠═51aebd47-156c-4bf7-b991-f1c4ff0ee8b5
 # ╠═83760c7c-fe94-4b4b-a7c9-ca20c051a973
