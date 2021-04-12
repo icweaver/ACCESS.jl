@@ -64,6 +64,9 @@ md"""
 # ╔═╡ 13cb7356-6e36-4565-b586-f05e3fab4b2f
 eparams = CSV.read(eparams_path, DataFrame, normalizenames=true)
 
+# ╔═╡ e85b316c-f0a3-4892-964b-53e7577cac25
+X = norm_data(eparams, dims=1)
+
 # ╔═╡ a119f4b6-ab36-493b-b732-a055f09cdc54
 md"""
 ## Comp stars
@@ -72,35 +75,8 @@ md"""
 # ╔═╡ c04b2b40-d3dd-47ed-bee7-a4e42ece3f96
 comps = CSV.read(comps_path, DataFrame, header=false)
 
-# ╔═╡ 519cd15e-e6a0-4d7f-b9c7-40be545fa373
-md"""
-## PCA
-"""
-
-# ╔═╡ 6b2b8037-aa24-4671-a1b8-9d9027c2c8bc
-function norm_data(A; dims=1, use_MAD=false)
-	A = Matrix{Float64}(A)
-	
-	if use_MAD
-		return (A .- median(A, dims=dims)) ./ mapslices(mad, A, dims=1)
-	else
-		return (A .- mean(A, dims=dims)) ./ std(A, dims=dims, corrected=false)
-	end
-end
-
-# ╔═╡ e85b316c-f0a3-4892-964b-53e7577cac25
-X = norm_data(eparams, dims=1)
-
 # ╔═╡ c4f1f656-ce41-4319-a394-cae2094fdd14
 Xc = norm_data(comps, dims=1)
-
-# ╔═╡ 19f011b1-719e-4d08-9f64-c02232939aa4
-md"""
-`svd(A)` returns `U`, `S`, `V`, where ``A = U \Sigma V^*``, with ``\Sigma = \text{diagm}(S)`` being the diagonal matrix of singular values sorted in descending order.
-"""
-
-# ╔═╡ c52b38fb-bd77-4176-a570-0923aa99cc07
-V, S, A = classic_PCA(Xc)
 
 # ╔═╡ 51aebd47-156c-4bf7-b991-f1c4ff0ee8b5
 plot_params(A, A_names) = plot(A, label=reshape(names(A_names), (1, :)))
@@ -111,9 +87,15 @@ plot_params(X, eparams)
 # ╔═╡ d621bf6d-c6ab-4626-89fd-6f5d5ac68a47
 plot_params(Xc, comps)
 
+# ╔═╡ 519cd15e-e6a0-4d7f-b9c7-40be545fa373
+md"""
+## PCA
+"""
+
+# ╔═╡ c52b38fb-bd77-4176-a570-0923aa99cc07
+V, S, A = classic_PCA(Xc)
+
 # ╔═╡ 83760c7c-fe94-4b4b-a7c9-ca20c051a973
-
-
 # 	# Load pickle
 # 	gpts_pkl_to_dict = load_pickle(
 
@@ -181,11 +163,9 @@ end
 # ╠═c04b2b40-d3dd-47ed-bee7-a4e42ece3f96
 # ╠═c4f1f656-ce41-4319-a394-cae2094fdd14
 # ╠═d621bf6d-c6ab-4626-89fd-6f5d5ac68a47
-# ╟─519cd15e-e6a0-4d7f-b9c7-40be545fa373
-# ╠═6b2b8037-aa24-4671-a1b8-9d9027c2c8bc
-# ╟─19f011b1-719e-4d08-9f64-c02232939aa4
-# ╠═c52b38fb-bd77-4176-a570-0923aa99cc07
 # ╠═51aebd47-156c-4bf7-b991-f1c4ff0ee8b5
+# ╟─519cd15e-e6a0-4d7f-b9c7-40be545fa373
+# ╠═c52b38fb-bd77-4176-a570-0923aa99cc07
 # ╠═83760c7c-fe94-4b4b-a7c9-ca20c051a973
 # ╠═67ce08a4-9a04-11eb-2800-d5325a874022
 # ╠═030a5a05-8009-4a3d-8e83-a1979fadf9f4
